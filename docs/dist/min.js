@@ -60,15 +60,8 @@ var e = {
 	buildHeaderClickable: {
 		type: "single",
 		narration: "Build table header",
-		destinationPath: {
-			fileName: "base",
-			filePath: ["children"],
-			jsonPath: "$..*[?@.attributes['data-role'] == 'table-header-row']"
-		},
-		sourcePath: {
-			fileName: "data",
-			jsonPath: "$.columns"
-		},
+		destinationPath: { jsonPath: "$.base..*[?@.attributes['data-role'] == 'table-header-row'].children" },
+		sourcePath: "$.data.columns",
 		templateKey: "tableHeaderClickable",
 		func: "fromCollection"
 	},
@@ -112,81 +105,60 @@ var e = {
 	buildFormField: {
 		type: "single",
 		narration: "Build form fields from columns",
-		destinationPath: {
-			fileName: "base",
-			filePath: ["children"],
-			jsonPath: "$..*[?@.attributes['data-role'] == 'form-body']"
-		},
-		sourcePath: {
-			fileName: "data",
-			jsonPath: "$.columns"
-		},
+		destinationPath: { jsonPath: "$.base..*[?@.attributes['data-role'] == 'form-body'].children" },
+		sourcePath: "$.data.columns",
 		templateKey: "buildFormField",
 		func: "fromCollection"
 	},
 	buildSelectWithOptions: {
 		type: "columnOnRow",
 		narration: "Build selects with options",
-		destinationPath: {
-			fileName: "base",
-			filePath: ["children"]
+		sourcePath: {
+			columns: "$.data.columns",
+			rows: "$.data.data"
 		},
+		destinationPath: { jsonPath: "$.base.children" },
 		templateKey: {
 			columnKey: "buildSelect",
 			rowKey: "buildOption"
-		}
+		},
+		func: "columnOnRow"
 	},
 	buildSelectOptions: {
 		type: "single",
 		narration: "Build select options",
-		destinationPath: {
-			fileName: "base",
-			filePath: ["children"]
-		},
-		sourcePath: {
-			fileName: "data",
-			jsonPath: "$.data"
-		},
+		destinationPath: { jsonPath: "$.base.children" },
+		sourcePath: "$.data.data",
 		templateKey: "buildOption",
 		func: "fromCollection"
 	},
 	buildOptionsArray: {
 		type: "single",
 		narration: "Build options array",
-		destinationPath: {
-			fileName: "base",
-			filePath: []
-		},
-		sourcePath: {
-			fileName: "data",
-			jsonPath: "$.data"
-		},
+		destinationPath: { jsonPath: "$.base" },
+		sourcePath: "$.data.data",
 		templateKey: "buildOption",
 		func: "fromCollection"
 	},
 	buildDataListWithOptions: {
 		type: "columnOnRow",
 		narration: "Build datalists with options",
-		destinationPath: {
-			fileName: "base",
-			filePath: ["children"]
+		sourcePath: {
+			columns: "$.data.columns",
+			rows: "$.data.data"
 		},
+		destinationPath: { jsonPath: "$.base.children" },
 		templateKey: {
 			columnKey: "buildDataList",
 			rowKey: "buildOption"
-		}
+		},
+		func: "columnOnRow"
 	},
 	buildAccordionItems: {
 		type: "single",
 		narration: "Build accordion items from array",
-		destinationPath: {
-			fileName: "base",
-			filePath: ["children"]
-		},
-		sourcePath: {
-			fileName: "data",
-			jsonPath: "$.items"
-		},
+		destinationPath: { jsonPath: "$.base.children" },
+		sourcePath: "$.data.items",
 		templateKey: "buildAccordionItem",
 		func: "fromCollection"
 	},
@@ -194,12 +166,10 @@ var e = {
 		type: "single",
 		narration: "Build card body content",
 		destinationPath: {
-			fileName: "base",
-			filePath: ["children"],
 			action: "push",
-			jsonPath: "$..*[?@.attributes['data-role'] == 'card-body']"
+			jsonPath: "$.base..*[?@.attributes['data-role'] == 'card-body'].children"
 		},
-		sourcePath: { fileName: "data" },
+		sourcePath: "$.data",
 		templateKey: "buildCardBodyTemplate",
 		func: "applyTemplate"
 	},
@@ -207,12 +177,10 @@ var e = {
 		type: "single",
 		narration: "Build card header content",
 		destinationPath: {
-			fileName: "base",
-			filePath: ["children"],
 			action: "push",
-			jsonPath: "$..*[?@.attributes['data-role'] == 'card-header']"
+			jsonPath: "$.base..*[?@.attributes['data-role'] == 'card-header'].children"
 		},
-		sourcePath: { fileName: "data" },
+		sourcePath: "$.data",
 		templateKey: "buildCardHeaderTemplate",
 		func: "applyTemplate"
 	},
@@ -220,68 +188,42 @@ var e = {
 		type: "single",
 		narration: "Build card footer content",
 		destinationPath: {
-			fileName: "base",
-			filePath: ["children"],
 			action: "push",
-			jsonPath: "$..*[?@.attributes['data-role'] == 'card-footer']"
+			jsonPath: "$.base..*[?@.attributes['data-role'] == 'card-footer'].children"
 		},
-		sourcePath: { fileName: "data" },
+		sourcePath: "$.data",
 		templateKey: "buildCardFooterTemplate",
 		func: "applyTemplate"
 	},
 	buildListItems: {
 		type: "single",
 		narration: "Build simple list items",
-		destinationPath: {
-			fileName: "base",
-			filePath: ["children"]
-		},
-		sourcePath: {
-			fileName: "data",
-			jsonPath: "$.items"
-		},
+		destinationPath: { jsonPath: "$.base.children" },
+		sourcePath: "$.data.items",
 		templateKey: "buildListItemTemplate",
 		func: "fromCollection"
 	},
 	buildListGroupItems: {
 		type: "single",
 		narration: "Build list-group items",
-		destinationPath: {
-			fileName: "base",
-			filePath: ["children"]
-		},
-		sourcePath: {
-			fileName: "data",
-			jsonPath: "$.items"
-		},
+		destinationPath: { jsonPath: "$.base.children" },
+		sourcePath: "$.data.items",
 		templateKey: "buildListGroupItemTemplate",
 		func: "fromCollection"
 	},
 	buildMenuItems: {
 		type: "single",
 		narration: "Build navigation menu items",
-		destinationPath: {
-			fileName: "base",
-			filePath: ["children"]
-		},
-		sourcePath: {
-			fileName: "data",
-			jsonPath: "$.items"
-		},
+		destinationPath: { jsonPath: "$.base.children" },
+		sourcePath: "$.data.items",
 		templateKey: "buildMenuItemTemplate",
 		func: "fromCollection"
 	},
 	buildMenuCards: {
 		type: "single",
 		narration: "Build menu cards grid",
-		destinationPath: {
-			fileName: "base",
-			filePath: ["children"]
-		},
-		sourcePath: {
-			fileName: "data",
-			jsonPath: "$.items"
-		},
+		destinationPath: { jsonPath: "$.base.children" },
+		sourcePath: "$.data.items",
 		templateKey: "buildMenuCardItemTemplate",
 		func: "fromCollection"
 	}
