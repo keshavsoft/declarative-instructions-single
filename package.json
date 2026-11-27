@@ -1,0 +1,36 @@
+{
+  "name": "declarative-instructions-single",
+  "version": "1.2.1",
+  "description": "High-level declarative UI component blueprints, option configurations, and assembly contracts for JSON-to-DOM compilers.",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "default": "./src/index.js"
+    }
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keshavsoft/declarative-instructions.git"
+  },
+  "scripts": {
+    "build:json": "node scripts/sync-latest-json.mjs",
+    "build": "npx @keshavsoft/build-cli && npm run build:json"
+  },
+  "keywords": [
+    "declarative-ui",
+    "component-blueprints",
+    "ui-contracts",
+    "dom-compiler",
+    "zero-dependency"
+  ],
+  "author": "KeshavSoft",
+  "license": "MIT",
+  "homepage": "https://keshavsoft.github.io/declarative-instructions/"
+}
