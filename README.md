@@ -1,77 +1,82 @@
 # declarative-instructions-single
 
-> **One declarative instruction per transformation.** A focused assembly contract for reports and reusable UI built from JSON data.
+> The individual table-building steps used by the tested V7 report sample.
 
 [![npm](https://img.shields.io/npm/v/declarative-instructions-single?color=cb3837&label=npm)](https://www.npmjs.com/package/declarative-instructions-single)
-[![Documentation](https://img.shields.io/badge/docs-read%20the%20story-38bdf8)](https://keshavsoft.github.io/declarative-instructions-single/)
+[![Documentation](https://img.shields.io/badge/docs-follow%20the%20table-38bdf8)](https://keshavsoft.github.io/declarative-instructions-single/)
 ![License: MIT](https://img.shields.io/badge/license-MIT-34d399.svg)
 
-## The story
+## The table story
 
-The original `declarative-instructions` report grew to cover several ways of assembling an interface. This package gives the **single-instruction pattern** its own home: each top-level key describes one transformation, with a source, a destination, a template, and—when needed—a mapping function.
+The V7 table sample in [`json-renderers-run-instructions-steps`](https://github.com/keshavsoft/json-renderers-run-instructions-steps/tree/main/samples/v7/table) starts with an empty table shell named `tableWithFooter` from `declarative-spec`. It clones that shell, then runs a sequence of named instructions against the clone.
 
-That keeps each operation easy to find and reason about. A table header, a body, a form field collection, or a menu can each be understood on its own. The renderer still owns execution; this package describes the assembly work declaratively.
+This package supplies the **single** references in that sequence. Each `{ type: "single", key }` selects one instruction object, such as `buildHeader` or `buildBody`. The step runner resolves the key, reads its source and destination paths, applies the named template function, and writes the result into the table tree.
 
-## The instruction contract
+## What the sample builds
 
-Most collection builders follow this shape:
+The sample data has three configured columns—Item Name, Category, and Base Unit—and three material records. The `columns` metadata controls the visible table columns; the row builder maps each record through those definitions.
 
-```json
-{
-  "buildHeader": {
-    "type": "single",
-    "narration": "Build table header",
-    "destinationPath": {
-      "jsonPath": "$..*[?@.attributes['data-role'] == 'table-header-row'].children"
-    },
-    "sourcePath": "$.data.columns",
-    "templateKey": "buildHeader",
-    "func": "fromCollection"
-  }
-}
-```
-
-The contract answers four practical questions:
-
-| Field | Purpose |
+| Single key | Contribution to the table |
 | --- | --- |
-| `sourcePath` | Which input value or collection feeds the transformation? |
-| `destinationPath` | Which part of the assembled tree receives the result? |
-| `templateKey` | Which reusable blueprint should be applied? |
-| `func` | Which standard mapping or template function shapes the result? |
+| `buildColgroup` | Maps the column definitions to table column widths. |
+| `buildHeader` | Builds header cells from the column definitions. |
+| `buildBody` | Maps rows against columns with `rowOnColumn` to build body cells. |
+| `buildFooter` | Builds footer cells from the column definitions. |
+| `set-search` | Inserts the search toolbar frame into the table shell. |
+| `search-show-label` | Fills the toolbar’s label slot. |
+| `search-show-helper` | Fills the toolbar’s helper slot. |
+| `search-show-input` | Fills the toolbar’s input slot. |
+| `serial-show-serial` | Adds a serial-number cell to each body row. |
 
-Instructions can also describe row-by-column mapping, direct template application, or guarded insertions. For example, optional search controls use `skipIf` so an already-present control is not inserted again.
+These are nine individual references in the tested sequence. Three additional `multi` references from the sibling package add the coordinated serial and action-column features.
 
-## What is included
+## How the table is assembled
 
-- **Report tables:** column groups, clickable or regular headers, footers, and row-on-column bodies.
-- **Report helpers:** serial cells and search toolbar, label, input, and helper insertions.
-- **Forms and choices:** fields, selects, select options, option arrays, and datalists.
-- **Reusable content:** accordion items, card sections, lists, list groups, navigation items, and menu cards.
-
-The live documentation includes a searchable catalog generated from the current v3 instruction JSON, with each full contract available to inspect.
-
-## Install and use
-
-```bash
-npm install declarative-instructions-single
-```
+The order matters: the shell provides the destination roles first; the core instructions fill its table sections; search and column features are then inserted into those sections.
 
 ```js
-import instructions from "declarative-instructions-single";
+import runInstructions from "json-renderers-run-instructions-steps";
+import spec from "declarative-spec";
 
-const tableBodyContract = instructions.buildBody;
-console.log(tableBodyContract.func); // "rowOnColumn"
+const base = structuredClone(spec.tableWithFooter);
+
+const result = runInstructions({
+  instructions: [
+    { type: "single", key: "buildColgroup" },
+    { type: "single", key: "buildHeader" },
+    { type: "single", key: "buildBody" },
+    { type: "single", key: "buildFooter" },
+    { type: "single", key: "set-search" },
+    { type: "single", key: "search-show-label" },
+    { type: "single", key: "search-show-helper" },
+    { type: "single", key: "search-show-input" },
+    { type: "multi", key: "set-serial" },
+    { type: "single", key: "serial-show-serial" },
+    { type: "multi", key: "options-show-button" },
+    { type: "multi", key: "options-show-edit-button" }
+  ],
+  base,
+  data: { columns, data }
+});
 ```
 
-The package exports the latest instruction object from its root entry point. Use these rules with the compatible JSON-to-DOM compiler and the matching templates from `declarative-spec`.
+The runner executes those references in order, mutates the supplied `base`, and returns that same completed table tree. The V7 sample then passes the result to `json-to-dom` for browser rendering.
 
-## Versions and source
+## Why “single” matters here
 
-- Current instructions: [`src/v3/instructions.json`](src/v3/instructions.json)
-- Versioned JSON reference: [`docs/json/v3/instructions.json`](docs/json/v3/instructions.json)
-- Documentation story and catalog: [`docs/index.html`](docs/index.html)
-- Related multi-step report: [declarative-instructions-multi](https://github.com/keshavsoft/declarative-instructions-multi)
+The table header, body, footer, and toolbar are separate operations. That keeps each source-to-destination mapping visible and lets the report sequence combine those operations with multi-step features from [`declarative-instructions-multi`](https://github.com/keshavsoft/declarative-instructions-multi).
+
+The package contains the instruction definitions. The step runner performs execution, `declarative-spec` provides the base and reusable templates, and the transformer functions map the column and row data.
+
+## Install
+
+For the integrated table flow, install the runner and spec package; the runner depends on both single and multi instruction maps:
+
+```bash
+npm install json-renderers-run-instructions-steps declarative-spec
+```
+
+Current table instructions: [`src/v3/instructions.json`](src/v3/instructions.json) · [Searchable table story](docs/index.html)
 
 ## License
 
