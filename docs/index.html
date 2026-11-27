@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#08111f">
-  <meta name="description" content="How the single instruction package builds the tested V7 report table, from an empty spec shell to rendered rows.">
-  <title>Building the V7 table — Single instructions</title>
+  <meta name="description" content="How the V5 single instruction catalog describes atomic operations for JSON UI specifications.">
+  <title>Atomic instruction catalog — Single instructions V5</title>
   <style>
     :root{color-scheme:dark;--bg:#08111f;--panel:#0d1a2c;--line:#22344d;--text:#e8f0fb;--muted:#9aacc4;--cyan:#62d8ef;--blue:#6c91ff;--green:#78e0b5;--mono:ui-monospace,SFMono-Regular,Consolas,monospace;--sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
     *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 78% 0%,#172d50 0,transparent 40%),var(--bg);color:var(--text);font:16px/1.6 var(--sans)}a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}.wrap{width:min(1120px,calc(100% - 40px));margin:auto}.top{height:68px;border-bottom:1px solid #ffffff14;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;gap:12px;align-items:center;color:var(--text);font-weight:750;letter-spacing:.01em}.mark{width:34px;height:34px;border-radius:11px;background:linear-gradient(145deg,var(--cyan),var(--blue));display:grid;place-items:center;color:#07111e;font-size:14px;font-weight:900;box-shadow:0 8px 30px #62d8ef33}.nav{display:flex;gap:22px;font-size:13px;color:var(--muted)}.hero{padding:88px 0 66px;max-width:850px}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 11px;border:1px solid #62d8ef45;border-radius:999px;background:#62d8ef0c;color:#8be5f3;font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}.dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 14px var(--green)}h1{font-size:clamp(42px,7vw,76px);line-height:1.02;letter-spacing:-.055em;margin:24px 0 20px}.shine{background:linear-gradient(95deg,#fff 5%,#89e6f4 52%,#91a8ff);color:transparent;background-clip:text}.lead{max-width:700px;color:#b7c6da;font-size:19px;line-height:1.65}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}.btn{display:inline-flex;align-items:center;gap:9px;padding:11px 15px;border:1px solid var(--line);border-radius:10px;color:var(--text);font-size:14px;font-weight:700;background:#ffffff07}.btn.primary{background:linear-gradient(110deg,#51cfe7,#7896ff);color:#06111e;border:0}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:48px}.metric{border:1px solid #ffffff14;background:#08111f9c;border-radius:14px;padding:15px 17px}.metric b{display:block;font-size:20px;color:#fff}.metric span{color:var(--muted);font-size:12px}.section{padding:32px 0 70px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:22px}.kicker{font:700 11px var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--cyan)}h2{font-size:clamp(26px,4vw,38px);line-height:1.15;letter-spacing:-.035em;margin:7px 0 0}.sub{color:var(--muted);max-width:570px;margin:8px 0 0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{border:1px solid var(--line);background:linear-gradient(150deg,#102038,#0a1525);border-radius:16px;padding:21px}.card h3{margin:0 0 8px;font-size:17px}.card p{margin:0;color:var(--muted);font-size:14px}.num{font:700 12px var(--mono);color:var(--cyan);margin-bottom:15px}.flow{display:grid;grid-template-columns:repeat(5,1fr);align-items:stretch;gap:10px;margin-top:23px}.step{border:1px solid var(--line);background:#0b1728;border-radius:12px;padding:15px 13px;min-height:93px}.step b{display:block;font:700 12px var(--mono);color:var(--cyan);margin-bottom:7px}.step span{font-size:13px;color:#c1cde0}.arrow{display:none}.codebox{position:relative;border:1px solid #263a56;border-radius:15px;background:#050b14;overflow:hidden}.code-top{display:flex;justify-content:space-between;align-items:center;padding:11px 15px;background:#ffffff06;border-bottom:1px solid #ffffff12;color:var(--muted);font:12px var(--mono)}pre{overflow:auto;margin:0;padding:20px;color:#cde0fb;font:13px/1.65 var(--mono)}.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}.note{border-left:2px solid var(--cyan);padding:2px 0 2px 16px;color:var(--muted);font-size:14px}.catalog{border:1px solid var(--line);border-radius:16px;background:#0a1525;overflow:hidden}.catalog-bar{padding:15px;display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--line);flex-wrap:wrap}.catalog-bar input{flex:1;min-width:220px;background:#07101c;border:1px solid #293c55;border-radius:9px;padding:11px 13px;color:var(--text);font:14px var(--sans);outline:none}.catalog-bar input:focus{border-color:var(--cyan)}#count{font:12px var(--mono);color:var(--muted)}.items{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:14px}.item{border:1px solid #203149;border-radius:11px;background:#0d1a2b;padding:12px}.item summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}.item summary::-webkit-details-marker{display:none}.key{font:700 13px var(--mono);color:#dcecff;overflow-wrap:anywhere}.badge{white-space:nowrap;color:#8be5f3;font:10px var(--mono);border:1px solid #62d8ef33;border-radius:999px;padding:3px 7px}.item p{margin:9px 0;color:var(--muted);font-size:13px}.item pre{padding:11px;border-radius:8px;background:#060d17;font-size:11px}.empty{display:none;padding:24px;color:var(--muted);text-align:center}.footer{border-top:1px solid #ffffff15;padding:27px 0 40px;color:var(--muted);font-size:13px}.footrow{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
@@ -16,31 +16,31 @@
 <body>
   <header class="top wrap">
     <a class="brand" href="#top"><span class="mark">DI</span><span>declarative-instructions-single</span></a>
-    <nav class="nav" aria-label="Page navigation"><a href="#story">Story</a><a href="#contract">Body mapping</a><a href="#sequence">V7 sequence</a><a href="https://github.com/keshavsoft/declarative-instructions-single">GitHub ↗</a></nav>
+    <nav class="nav" aria-label="Page navigation"><a href="#story">Story</a><a href="#contract">Instruction shape</a><a href="#sequence">Use a key</a><a href="https://github.com/keshavsoft/declarative-instructions-single">GitHub ↗</a></nav>
   </header>
   <main id="top" class="wrap">
     <section class="hero">
-      <span class="eyebrow"><span class="dot"></span> Tested path · V7 table</span>
-      <h1>Start with a shell.<br><span class="shine">Build the table in steps.</span></h1>
-      <p class="lead">The single package supplies the table-building instructions used by the V7 sample. A cloned table spec gives each step a destination; column definitions and records provide the data to assemble.</p>
-      <div class="actions"><a class="btn primary" href="#sequence">Follow the tested sequence <span>↓</span></a><a class="btn" href="https://www.npmjs.com/package/declarative-instructions-single">View npm package ↗</a></div>
-      <div class="metrics"><div class="metric"><b>9</b><span>single references in the sample</span></div><div class="metric"><b>3 × 3</b><span>configured columns and sample rows</span></div><div class="metric"><b>rowOnColumn</b><span>maps each record across its columns</span></div></div>
+      <span class="eyebrow"><span class="dot"></span> V5 instruction catalog</span>
+      <h1>One key describes<br><span class="shine">one operation.</span></h1>
+      <p class="lead">The single catalog names atomic work: map columns into a header, build body rows, fill a search slot, or assemble a form, select, list, card, or menu.</p>
+      <div class="actions"><a class="btn primary" href="#catalog">Explore the instructions <span>↓</span></a><a class="btn" href="https://www.npmjs.com/package/declarative-instructions-single">View npm package ↗</a></div>
+      <div class="metrics"><div class="metric"><b>22</b><span>named single instructions</span></div><div class="metric"><b>4</b><span>data transformation functions</span></div><div class="metric"><b>1</b><span>operation selected by each key</span></div></div>
     </section>
 
     <section id="story" class="section">
-      <div class="section-head"><div><div class="kicker">The table story</div><h2>Each instruction fills one part.</h2></div><p class="sub">The sample starts from <code>spec.tableWithFooter</code>, an empty table AST with marked colgroup, header, body, and footer targets.</p></div>
+      <div class="section-head"><div><div class="kicker">The catalog story</div><h2>Each key describes one atomic operation.</h2></div><p class="sub">The V5 catalog gives a runner the source path, transformation, template, and destination it needs for one step.</p></div>
       <div class="grid">
-        <article class="card"><div class="num">01 / CLONE THE SHELL</div><h3>Keep the spec reusable</h3><p>The sample clones the base table before changes are made. The cloned object becomes the canvas passed to the runner.</p></article>
-        <article class="card"><div class="num">02 / SUPPLY TABLE DATA</div><h3>Columns define the shape</h3><p>Three column definitions describe Item Name, Category, and Base Unit. Three records provide the values for the body rows.</p></article>
-        <article class="card"><div class="num">03 / RUN SINGLE KEYS</div><h3>Fill each table region</h3><p>Separate keys build widths, header, body, footer, and the search controls. A later single key adds serial values to body rows.</p></article>
+        <article class="card"><div class="num">01 / LOCATE INPUT</div><h3>Read the needed values</h3><p><code>sourcePath</code> identifies data such as columns and records. Static template insertions can omit a source.</p></article>
+        <article class="card"><div class="num">02 / SHAPE OUTPUT</div><h3>Choose a function and template</h3><p><code>func</code> selects how values are mapped; <code>templateKey</code> selects the reusable spec shape.</p></article>
+        <article class="card"><div class="num">03 / PLACE RESULT</div><h3>Write to one destination</h3><p><code>destinationPath</code> identifies the target in the existing JSON tree for this operation.</p></article>
       </div>
-      <div class="flow" aria-label="V7 table assembly flow"><div class="step"><b>SPEC</b><span>tableWithFooter</span></div><div class="step"><b>CLONE</b><span>mutable table canvas</span></div><div class="step"><b>DATA</b><span>columns + records</span></div><div class="step"><b>INSTRUCTIONS</b><span>single and multi refs</span></div><div class="step"><b>RENDER</b><span>completed AST → DOM</span></div></div>
+      <div class="flow" aria-label="Single instruction flow"><div class="step"><b>KEY</b><span>named operation</span></div><div class="step"><b>SOURCE</b><span>input path</span></div><div class="step"><b>TRANSFORM</b><span>function + template</span></div><div class="step"><b>DESTINATION</b><span>target path</span></div><div class="step"><b>RUNNER</b><span>applies the step</span></div></div>
     </section>
 
     <section id="contract" class="section">
-      <div class="section-head"><div><div class="kicker">One table instruction</div><h2>Rows meet columns at the body.</h2></div><p class="sub">`buildBody` is the table’s two-dimensional step. It takes the records and column metadata, then places generated rows under the spec’s `table-body` role.</p></div>
+      <div class="section-head"><div><div class="kicker">One instruction</div><h2>Rows meet columns at the body.</h2></div><p class="sub"><code>buildBody</code> reads records and column metadata, combines row and cell templates, then targets the table body.</p></div>
       <div class="cols">
-        <div class="codebox"><div class="code-top"><span>src/v4/instructions.json</span><span>buildBody</span></div><pre><code>{
+        <div class="codebox"><div class="code-top"><span>src/v5/instructions.json</span><span>buildBody</span></div><pre><code>{
   "buildBody": {
     "type": "rowOnColumn",
     "narration": "Build table body",
@@ -58,39 +58,30 @@
     "func": "rowOnColumn"
   }
 }</code></pre></div>
-        <div class="note"><strong style="color:var(--text)">The other single steps</strong><br><br><code>buildColgroup</code>, <code>buildHeader</code>, and <code>buildFooter</code> each map the column definitions into their matching table destination. Search is added as a toolbar plus label, helper, and input slot instructions.</div>
+        <div class="note"><strong style="color:var(--text)">The package covers more than tables</strong><br><br>The catalog also describes forms, selects, datalists, accordions, cards, lists, list groups, menus, and menu cards. Search controls are separate named steps.</div>
       </div>
     </section>
 
     <section id="sequence" class="section">
-      <div class="section-head"><div><div class="kicker">Exact sample order</div><h2>One runner call composes both packages.</h2></div><p class="sub">The V7 table uses nine single references from this package and three multi bundles from its sibling.</p></div>
-      <div class="codebox"><div class="code-top"><span>samples/v7/table/index.js</span><span>12 references · ordered</span></div><pre><code>instructions: [
-  { type: "single", key: "buildColgroup" },
-  { type: "single", key: "buildHeader" },
-  { type: "single", key: "buildBody" },
-  { type: "single", key: "buildFooter" },
-  { type: "single", key: "set-search" },
-  { type: "single", key: "search-show-label" },
-  { type: "single", key: "search-show-helper" },
-  { type: "single", key: "search-show-input" },
-  { type: "multi", key: "set-serial" },
-  { type: "single", key: "serial-show-serial" },
-  { type: "multi", key: "options-show-button" },
-  { type: "multi", key: "options-show-edit-button" }
-],
-base: structuredClone(spec.tableWithFooter),
-data: { columns, data }</code></pre></div>
-      <p class="sub" style="margin-top:16px">The runner executes the list in order, mutates the cloned table, and returns the assembled AST for `json-to-dom` to render. See the <a href="https://github.com/keshavsoft/declarative-instructions-multi">multi package story</a> for the serial and action-column bundles.</p>
+      <div class="section-head"><div><div class="kicker">Reference a key</div><h2>Let the runner perform the operation.</h2></div><p class="sub">The catalog exports definitions. A step descriptor tells a compatible executor which one to retrieve.</p></div>
+      <div class="codebox"><div class="code-top"><span>Instruction reference</span><span>single step</span></div><pre><code>import singleInstructions from "declarative-instructions-single";
+
+const body = singleInstructions.buildBody;
+
+const descriptor = {
+  type: "single",
+  key: "buildBody"
+};</code></pre></div>
+      <p class="sub" style="margin-top:16px">The runner provides the current state, applies the definition, and mutates the target JSON tree. This package only supplies the named operation.</p>
     </section>
 
     <section id="catalog" class="section">
-      <div class="section-head"><div><div class="kicker">Single keys in this sample</div><h2>Inspect the table instructions.</h2></div><p class="sub">Search only the single-package keys used by the V7 table sample. Expand a key to read its current JSON contract.</p></div>
-      <div class="catalog"><div class="catalog-bar"><input id="search" type="search" placeholder="Search table, body, search…" aria-label="Search V7 single table instructions"><span id="count" aria-live="polite">Loading table instructions…</span></div><div class="items" id="items"></div><div class="empty" id="empty">No table instructions match that search.</div></div>
+      <div class="section-head"><div><div class="kicker">Complete V5 catalog</div><h2>Inspect all single instructions.</h2></div><p class="sub">Search the current catalog and expand an entry to read its JSON contract.</p></div>
+      <div class="catalog"><div class="catalog-bar"><input id="search" type="search" placeholder="Search table, form, list, search…" aria-label="Search V5 single instructions"><span id="count" aria-live="polite">Loading V5 instructions…</span></div><div class="items" id="items"></div><div class="empty" id="empty">No instructions match that search.</div></div>
     </section>
   </main>
-  <footer class="footer"><div class="wrap footrow"><span>MIT © KeshavSoft · V7 table assembly story</span><span><a href="https://github.com/keshavsoft/declarative-instructions-single">Source</a> · <a href="https://www.npmjs.com/package/declarative-instructions-single">npm</a></span></div></footer>
+  <footer class="footer"><div class="wrap footrow"><span>MIT © KeshavSoft · V5 single instruction catalog</span><span><a href="https://github.com/keshavsoft/declarative-instructions-single">Source</a> · <a href="https://www.npmjs.com/package/declarative-instructions-single">npm</a></span></div></footer>
   <script type="module">
-    const sampleKeys = ["buildColgroup", "buildHeader", "buildBody", "buildFooter", "set-search", "search-show-label", "search-show-helper", "search-show-input", "serial-show-serial"];
     const list = document.querySelector("#items");
     const search = document.querySelector("#search");
     const count = document.querySelector("#count");
@@ -107,15 +98,15 @@ data: { columns, data }</code></pre></div>
         details.append(summary, append("p", "", value.narration || "Table instruction"), append("pre", "", JSON.stringify(value, null, 2)));
         list.append(details);
       }
-      count.textContent = `${visible.length} of ${entries.length} sample keys`;
+      count.textContent = `${visible.length} of ${entries.length} catalog instructions`;
       empty.style.display = visible.length ? "none" : "block";
     }
     search.addEventListener("input", render);
     try {
-      const response = await fetch("./json/v4/instructions.json");
+      const response = await fetch("./json/v5/instructions.json");
       if (!response.ok) throw new Error(`Instruction request failed (${response.status})`);
       const instructions = await response.json();
-      entries = sampleKeys.filter(key => instructions[key]).map(key => [key, instructions[key]]);
+      entries = Object.entries(instructions);
       render();
     } catch (error) { count.textContent = "Table instructions unavailable"; empty.style.display = "block"; empty.textContent = "Open this page through the documentation site to load the versioned JSON."; }
   </script>
