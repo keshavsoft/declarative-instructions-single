@@ -1,37 +1,18 @@
 var e = {
-	"serial-show-serial": {
-		narration: "Prepend the serial number cell into each table body row.",
+	"options-search": {
+		narration: "Insert the search toolbar frame before the table when a search feature is enabled.",
 		destinationPath: {
-			action: "unshiftSerialToRows",
-			jsonPath: "$.base..*[?@.attributes['data-role'] == 'table-body'].children"
+			fileName: "base",
+			filePath: ["children"],
+			action: "unshift",
+			jsonPath: "$.base.children"
 		},
 		sourcePath: null,
-		templateKey: "buildBodyCell",
-		func: null
-	},
-	"search-show-helper": {
-		narration: "Insert the search helper text into its configured slot.",
-		destinationPath: {
-			action: "push",
-			jsonPath: "$.base..*[?@.attributes['data-role'] == 'search-helper-slot'].children"
-		},
-		sourcePath: null,
-		templateKey: "searchHelper",
+		templateKey: "searchToolbar",
 		func: null,
-		skipIf: "$..*[?@.attributes.id == 'search-feedback']"
+		skipIf: "$..*[?@.attributes['data-role'] == 'search-toolbar']"
 	},
-	"search-show-input": {
-		narration: "Insert the search input into its configured slot.",
-		destinationPath: {
-			action: "push",
-			jsonPath: "$.base..*[?@.attributes['data-role'] == 'search-input-slot'].children"
-		},
-		sourcePath: null,
-		templateKey: "searchInput",
-		func: null,
-		skipIf: "$..*[?@.attributes.id == 'tableSearch']"
-	},
-	"search-show-label": {
+	"options-search-showLabel": {
 		narration: "Insert the search label into its configured slot.",
 		destinationPath: {
 			fileName: "base",
@@ -44,18 +25,27 @@ var e = {
 		func: null,
 		skipIf: "$..*[?@.attributes.id == 'table-title']"
 	},
-	"set-search": {
-		narration: "Insert the search toolbar frame before the table when a search feature is enabled.",
+	"options-search-showHelper": {
+		narration: "Insert the search helper text into its configured slot.",
 		destinationPath: {
-			fileName: "base",
-			filePath: ["children"],
-			action: "unshift",
-			jsonPath: "$.base.children"
+			action: "push",
+			jsonPath: "$.base..*[?@.attributes['data-role'] == 'search-helper-slot'].children"
 		},
 		sourcePath: null,
-		templateKey: "searchToolbar",
+		templateKey: "searchHelper",
 		func: null,
-		skipIf: "$..*[?@.attributes['data-role'] == 'search-toolbar']"
+		skipIf: "$..*[?@.attributes.id == 'search-feedback']"
+	},
+	"options-search-showInput": {
+		narration: "Insert the search input into its configured slot.",
+		destinationPath: {
+			action: "push",
+			jsonPath: "$.base..*[?@.attributes['data-role'] == 'search-input-slot'].children"
+		},
+		sourcePath: null,
+		templateKey: "searchInput",
+		func: null,
+		skipIf: "$..*[?@.attributes.id == 'tableSearch']"
 	},
 	buildHeaderClickable: {
 		type: "single",
