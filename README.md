@@ -76,7 +76,7 @@ For the integrated table flow, install the runner and spec package; the runner d
 npm install json-renderers-run-instructions-steps declarative-spec
 ```
 
-Current table instructions: [`src/v3/instructions.json`](src/v3/instructions.json) · [Searchable table story](docs/index.html)
+Current table instructions: [`src/v4/instructions.json`](src/v4/instructions.json) · [Searchable table story](docs/index.html)
 
 ## License
 

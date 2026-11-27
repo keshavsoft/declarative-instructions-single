@@ -40,7 +40,7 @@
     <section id="contract" class="section">
       <div class="section-head"><div><div class="kicker">One table instruction</div><h2>Rows meet columns at the body.</h2></div><p class="sub">`buildBody` is the table’s two-dimensional step. It takes the records and column metadata, then places generated rows under the spec’s `table-body` role.</p></div>
       <div class="cols">
-        <div class="codebox"><div class="code-top"><span>src/v3/instructions.json</span><span>buildBody</span></div><pre><code>{
+        <div class="codebox"><div class="code-top"><span>src/v4/instructions.json</span><span>buildBody</span></div><pre><code>{
   "buildBody": {
     "type": "rowOnColumn",
     "narration": "Build table body",
@@ -112,7 +112,7 @@ data: { columns, data }</code></pre></div>
     }
     search.addEventListener("input", render);
     try {
-      const response = await fetch("./json/v3/instructions.json");
+      const response = await fetch("./json/v4/instructions.json");
       if (!response.ok) throw new Error(`Instruction request failed (${response.status})`);
       const instructions = await response.json();
       entries = sampleKeys.filter(key => instructions[key]).map(key => [key, instructions[key]]);
