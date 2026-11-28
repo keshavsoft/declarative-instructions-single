@@ -9,7 +9,7 @@
       location.replace(location.pathname + '/' + location.search + location.hash);
     }
   </script>
-  <title>Instructions Studio | Monaco V3</title>
+  <title>declarative-instructions-single | Monaco V1</title>
   <link rel="stylesheet" href="./workspace/css/workspace.css">
   <link rel="stylesheet" href="./components/left/css/left.css">
   <link rel="stylesheet" href="./components/right/css/right.css">
@@ -19,19 +19,18 @@
   <main class="workspace" id="leftWorkspace">
     <aside class="left-workspace" aria-label="Instruction Selectors">
       <div class="studio-top">
-        <span class="studio-badge studio-badge--sky">TIER 3 · INSTRUCTIONS</span>
-        <a href="../index.html" class="hub-link" title="Back to Monaco V3 Hub">&larr; Hub</a>
+        <span class="studio-badge studio-badge--sky">DECLARATIVE INSTRUCTIONS · SINGLE</span>
+        <a href="../index.html" class="hub-link">&larr; Catalog versions</a>
       </div>
 
       <p class="studio-story">
-        JSONPath assembly rules and <code class="story-code">set-*</code> / <code class="story-code">search-show-*</code> option steps from <code class="story-code">declarative-instructions</code>.
+        Select an instruction key below to inspect its JSON definition from <code class="story-code">declarative-instructions-single</code>.
       </p>
 
       <div class="control-group">
-        <label for="rootSelect">Instruction Key</label>
-        <select id="rootSelect">
-          <option value="">Select Instruction</option>
-        </select>
+        <label for="instructionInput">Instruction Key</label>
+        <input id="instructionInput" type="text" list="instructionOptions" placeholder="Type or select a key" autocomplete="off" spellcheck="false">
+        <datalist id="instructionOptions"></datalist>
       </div>
 
       <button id="showAll" class="show-all-btn" type="button">Show all</button>
@@ -41,7 +40,7 @@
       <div class="editor-header">
         <div class="editor-header-left">
           <span id="editorTitle">instructions.json</span>
-          <span id="editorPath">Complete library</span>
+          <span id="editorPath">Complete V5 catalog</span>
         </div>
         <div class="editor-header-right">
           <span id="editorUrl" class="editor-url-pill" title=""></span>

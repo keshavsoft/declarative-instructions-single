@@ -1,7 +1,10 @@
 import { initRightEditor } from './components/right/js/index.js';
 import { initLeftWorkspace } from './components/left/js/index.js';
 
-const INSTRUCTIONS_URL = 'https://keshavsoft.github.io/declarative-instructions/json/v4/instructions.json';
+const AVAILABLE_VERSIONS = ['v3', 'v4', 'v5'];
+const requestedVersion = new URLSearchParams(window.location.search).get('version');
+const catalogVersion = AVAILABLE_VERSIONS.includes(requestedVersion) ? requestedVersion : 'v5';
+const INSTRUCTIONS_URL = new URL(`../../json/${catalogVersion}/instructions.json`, import.meta.url);
 
 async function loadInstructions(url) {
   const response = await fetch(url);
@@ -19,9 +22,9 @@ async function boot() {
   try {
     const instructions = await loadInstructions(INSTRUCTIONS_URL);
     const editor = await initRightEditor(instructions);
-    await initLeftWorkspace({ instructions, editor });
+    await initLeftWorkspace({ instructions, editor, catalogVersion });
   } catch (error) {
-    console.error('[Instructions Studio V2]', error);
+    console.error('[declarative-instructions-single Monaco V1]', error);
     if (urlEl) urlEl.textContent = `Failed: ${INSTRUCTIONS_URL}`;
   }
 }

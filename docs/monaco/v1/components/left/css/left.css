@@ -1,7 +1,8 @@
 .studio-top {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .studio-badge {
@@ -54,7 +55,7 @@
   color: #8fa5c4;
 }
 
-.control-group select {
+.control-group input {
   width: 100%;
   padding: 8px 10px;
   border-radius: 6px;
@@ -63,24 +64,23 @@
   color: #f0f5ff;
   font-size: 13px;
   outline: none;
-  cursor: pointer;
+  cursor: text;
   transition: border-color 0.15s ease;
 }
 
-.control-group select:focus {
+.control-group input::placeholder {
+  color: #7b91ae;
+}
+
+.control-group input:focus {
   border-color: #38bdf8;
 }
 
-.control-group select:focus-visible,
+.control-group input:focus-visible,
 .show-all-btn:focus-visible,
 .hub-link:focus-visible {
   outline: 2px solid #38bdf8;
   outline-offset: 2px;
-}
-
-.control-group select:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
 }
 
 .show-all-btn {

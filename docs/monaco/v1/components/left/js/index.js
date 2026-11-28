@@ -6,14 +6,20 @@ const getBindEvents = () =>
   window.ks?.domPrimitiveBindings?.bindEvents ||
   window.ks?.bindEvents;
 
-export async function initLeftWorkspace({ instructions, editor }) {
+export async function initLeftWorkspace({ instructions, editor, catalogVersion = 'v5' }) {
   const elements = {
-    rootSelect: document.getElementById('rootSelect'),
+    instructionInput: document.getElementById('instructionInput'),
+    instructionOptions: document.getElementById('instructionOptions'),
     editorTitle: document.getElementById('editorTitle'),
     editorPath: document.getElementById('editorPath')
   };
 
-  const actions = createActions({ instructions, editor, elements });
+  const actions = createActions({
+    instructions,
+    editor,
+    elements,
+    libraryLabel: `Complete ${catalogVersion.toUpperCase()} catalog`
+  });
   actions.initialize();
 
   let bindEvents = getBindEvents();

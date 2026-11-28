@@ -1,13 +1,17 @@
-function setOptions(select, values, placeholder) {
-  if (!select) return;
-  select.length = 0;
-  select.add(new Option(placeholder, ''));
-  values.forEach((value) => select.add(new Option(value, value)));
-  select.disabled = values.length === 0;
-}
-
-export function createActions({ instructions, editor, elements }) {
+export function createActions({ instructions, editor, elements, libraryLabel = 'Complete catalog' }) {
   const data = instructions || {};
+
+  const renderInstructionOptions = () => {
+    const datalist = elements.instructionOptions;
+    if (!datalist) return;
+
+    datalist.replaceChildren();
+    for (const key of Object.keys(data)) {
+      const option = document.createElement('option');
+      option.value = key;
+      datalist.append(option);
+    }
+  };
 
   const showSource = (value, title, path) => {
     editor.setValue(JSON.stringify(value, null, 2));
@@ -17,8 +21,8 @@ export function createActions({ instructions, editor, elements }) {
 
   const actions = {
     initialize: () => {
-      setOptions(elements.rootSelect, Object.keys(data), 'Select Instruction');
-      showSource(data, 'instructions.json', 'Complete library');
+      renderInstructionOptions();
+      showSource(data, 'instructions.json', libraryLabel);
     },
 
     selectRoot: (event, targetElement) => {
@@ -27,14 +31,15 @@ export function createActions({ instructions, editor, elements }) {
         actions.showAll();
         return;
       }
+      if (!Object.hasOwn(data, rootKey)) return;
 
       const item = data[rootKey];
       showSource(item, rootKey, `instructions.${rootKey}`);
     },
 
     showAll: () => {
-      if (elements.rootSelect) elements.rootSelect.value = '';
-      showSource(data, 'instructions.json', 'Complete library');
+      if (elements.instructionInput) elements.instructionInput.value = '';
+      showSource(data, 'instructions.json', libraryLabel);
     }
   };
 
